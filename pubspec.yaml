@@ -1,0 +1,27 @@
+name: flame_forge2d_game
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.5.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  characters: ^1.3.0 # UTF8을 준수하는 방식으로 파일 경로 조작하는데 사용
+  flame: ^1.19.0
+  flame_forge2d: ^0.18.2 # 플레임에 Forge2D 기능 추가
+  flame_kenney_xml: ^0.1.1
+  xml: ^6.5.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/images/
