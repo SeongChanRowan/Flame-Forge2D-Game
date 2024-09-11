@@ -40,6 +40,10 @@ class MyPhysicsGame extends Forge2DGame {
 
     await world.add(Background(sprite: Sprite(backgroundImage)));
     await addGround();
+    // 게임 자체가 아닌 world에 ground를 추가해야 합니다.
+    // 게임 인스턴스에 직접 추가하면 cameraComponent에서 올바르게 변환되지 않고
+    // Forge2D 시뮬레이션에 포함이 안됩니다.
+    // Forge2D를 시뮬레이션 하려면 world의 직속 하위 요소여야 합니다.
 
     return super.onLoad();
   }
