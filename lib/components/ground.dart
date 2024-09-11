@@ -3,6 +3,7 @@ import 'package:flame_forge2d/flame_forge2d.dart';
 
 const groundSize = 7.0;
 
+// 정적 요소
 class Ground extends BodyComponent {
   Ground(Vector2 position, Sprite sprite)
       : super(
