@@ -8,6 +8,7 @@ import 'package:flame_kenney_xml/flame_kenney_xml.dart';
 import 'background.dart';
 import 'brick.dart';
 import 'ground.dart';
+import 'player.dart';
 
 // Box2D 물리엔진 플러터 버전 == Forge2D
 class MyPhysicsGame extends Forge2DGame {
@@ -43,6 +44,7 @@ class MyPhysicsGame extends Forge2DGame {
     await world.add(Background(sprite: Sprite(backgroundImage)));
     await addGround();
     unawaited(addBricks());
+    await addPlayer();
     // 게임 자체가 아닌 world에 요소를 추가해야 합니다.
     // 게임 인스턴스에 직접 추가하면 cameraComponent에서 올바르게 변환되지 않고
     // Forge2D 시뮬레이션에 포함이 안됩니다.
@@ -89,5 +91,20 @@ class MyPhysicsGame extends Forge2DGame {
           tiles.getSprite('grass.png'),
         ),
     ]);
+  }
+
+  Future<void> addPlayer() async => world.add(
+        Player(
+          Vector2(camera.visibleWorldRect.left * 2 / 3, 0),
+          aliens.getSprite(PlayerColor.randomColor.fileName),
+        ),
+      );
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    if (isMounted && world.children.whereType<Player>().isEmpty) {
+      addPlayer();
+    }
   }
 }
