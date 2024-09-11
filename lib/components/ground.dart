@@ -17,6 +17,7 @@ class Ground extends BodyComponent {
             )
           ],
           children: [
+            // 여기서 렌더링 제공
             SpriteComponent(
               anchor: Anchor.center,
               sprite: sprite,
