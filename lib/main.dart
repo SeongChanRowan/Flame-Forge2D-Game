@@ -5,7 +5,7 @@ import 'components/game.dart';
 
 void main() {
   runApp(
-    GameWidget.controlled(
+    const GameWidget.controlled(
       gameFactory: MyPhysicsGame.new,
     ),
   );

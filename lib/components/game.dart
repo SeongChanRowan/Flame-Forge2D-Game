@@ -56,7 +56,22 @@ class MyPhysicsGame extends Forge2DGame {
   }
 
   final _random = Random();
+  var enemiesFullyAdded = false;
 
+  // 그라운드 추가
+  Future<void> addGround() {
+    return world.addAll([
+      for (var x = camera.visibleWorldRect.left;
+          x < camera.visibleWorldRect.right + groundSize;
+          x += groundSize)
+        Ground(
+          Vector2(x, (camera.visibleWorldRect.height - groundSize) / 2),
+          tiles.getSprite('grass.png'),
+        ),
+    ]);
+  }
+
+  // 브릭 추가
   Future<void> addBricks() async {
     for (var i = 0; i < 5; i++) {
       final type = BrickType.randomType;
@@ -83,24 +98,31 @@ class MyPhysicsGame extends Forge2DGame {
     }
   }
 
-  Future<void> addGround() {
-    return world.addAll([
-      for (var x = camera.visibleWorldRect.left;
-          x < camera.visibleWorldRect.right + groundSize;
-          x += groundSize)
-        Ground(
-          Vector2(x, (camera.visibleWorldRect.height - groundSize) / 2),
-          tiles.getSprite('grass.png'),
-        ),
-    ]);
-  }
-
+  // 플레이어 추가
   Future<void> addPlayer() async => world.add(
         Player(
           Vector2(camera.visibleWorldRect.left * 2 / 3, 0),
           aliens.getSprite(PlayerColor.randomColor.fileName),
         ),
       );
+
+  // 적 추가
+  Future<void> addEnemies() async {
+    await Future<void>.delayed(const Duration(seconds: 2));
+    for (var i = 0; i < 3; i++) {
+      await world.add(
+        Enemy(
+          Vector2(
+              camera.visibleWorldRect.right / 3 +
+                  (_random.nextDouble() * 7 - 3.5),
+              (_random.nextDouble() * 3)),
+          aliens.getSprite(EnemyColor.randomColor.fileName),
+        ),
+      );
+      await Future<void>.delayed(const Duration(seconds: 1));
+    }
+    enemiesFullyAdded = true;
+  }
 
   @override
   void update(double dt) {
@@ -130,24 +152,5 @@ class MyPhysicsGame extends Forge2DGame {
         ),
       );
     }
-  }
-
-  var enemiesFullyAdded = false;
-
-  Future<void> addEnemies() async {
-    await Future<void>.delayed(const Duration(seconds: 2));
-    for (var i = 0; i < 3; i++) {
-      await world.add(
-        Enemy(
-          Vector2(
-              camera.visibleWorldRect.right / 3 +
-                  (_random.nextDouble() * 7 - 3.5),
-              (_random.nextDouble() * 3)),
-          aliens.getSprite(EnemyColor.randomColor.fileName),
-        ),
-      );
-      await Future<void>.delayed(const Duration(seconds: 1));
-    }
-    enemiesFullyAdded = true;
   }
 }
