@@ -1,10 +1,12 @@
 import 'package:flame/components.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 
+import 'body_component_with_user_data.dart';
+
 const groundSize = 7.0;
 
 // 정적 요소
-class Ground extends BodyComponent {
+class Ground extends BodyComponentWithUserData {
   Ground(Vector2 position, Sprite sprite)
       : super(
           renderBody: false, // 디버그 렌더링 사용 중지
