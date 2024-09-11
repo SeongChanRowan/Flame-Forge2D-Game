@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flame/components.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flame_kenney_xml/flame_kenney_xml.dart';
 
 import 'background.dart';
+import 'brick.dart';
 import 'ground.dart';
 
 // Box2D 물리엔진 플러터 버전 == Forge2D
@@ -40,12 +42,41 @@ class MyPhysicsGame extends Forge2DGame {
 
     await world.add(Background(sprite: Sprite(backgroundImage)));
     await addGround();
-    // 게임 자체가 아닌 world에 ground를 추가해야 합니다.
+    unawaited(addBricks());
+    // 게임 자체가 아닌 world에 요소를 추가해야 합니다.
     // 게임 인스턴스에 직접 추가하면 cameraComponent에서 올바르게 변환되지 않고
     // Forge2D 시뮬레이션에 포함이 안됩니다.
     // Forge2D를 시뮬레이션 하려면 world의 직속 하위 요소여야 합니다.
 
     return super.onLoad();
+  }
+
+  final _random = Random();
+
+  Future<void> addBricks() async {
+    for (var i = 0; i < 5; i++) {
+      final type = BrickType.randomType;
+      final size = BrickSize.randomSize;
+
+      await world.add(
+        Brick(
+          type: type,
+          size: size,
+          damage: BrickDamage.some,
+          position: Vector2(
+              camera.visibleWorldRect.right / 3 +
+                  (_random.nextDouble() * 5 - 2.5),
+              0),
+          sprites: brickFileNames(type, size).map(
+            (key, filename) => MapEntry(
+              key,
+              elements.getSprite(filename),
+            ),
+          ),
+        ),
+      );
+      await Future<void>.delayed(const Duration(milliseconds: 500));
+    }
   }
 
   Future<void> addGround() {
