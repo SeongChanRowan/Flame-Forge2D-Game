@@ -14,6 +14,7 @@ dependencies:
   flame_forge2d: ^0.18.2 # 플레임에 Forge2D 기능 추가
   flame_kenney_xml: ^0.1.1
   xml: ^6.5.0
+  equatable: ^2.0.5
 
 dev_dependencies:
   flutter_test:
